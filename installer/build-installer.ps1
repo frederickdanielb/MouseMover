@@ -7,7 +7,7 @@ $projectPath = Join-Path $repositoryRoot 'MouseTestMover\MouseTestMover.csproj'
 $publishPath = Join-Path $repositoryRoot 'artifacts\publish'
 $scriptPath = Join-Path $PSScriptRoot 'MouseTestMover.iss'
 
-dotnet publish $projectPath -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o $publishPath
+dotnet publish $projectPath -c Release -r win-x64 --self-contained true -o $publishPath
 if ($LASTEXITCODE -ne 0) { throw 'La publicacion de la aplicacion fallo.' }
 
 $compiler = Get-Command 'ISCC.exe' -ErrorAction SilentlyContinue

@@ -43,7 +43,7 @@ dotnet run --project .\MouseTestMover\MouseTestMover.csproj
 Create a self-contained Windows x64 release. The target computer will not need the .NET runtime installed.
 
 ```powershell
-dotnet publish .\MouseTestMover\MouseTestMover.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o .\artifacts\publish
+dotnet publish .\MouseTestMover\MouseTestMover.csproj -c Release -r win-x64 --self-contained true -o .\artifacts\publish
 ```
 
 Distribute all files in `artifacts\publish`, as WPF may include native helper libraries alongside the executable.
