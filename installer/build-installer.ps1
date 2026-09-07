@@ -13,6 +13,7 @@ if ($LASTEXITCODE -ne 0) { throw 'La publicacion de la aplicacion fallo.' }
 $compiler = Get-Command 'ISCC.exe' -ErrorAction SilentlyContinue
 if ($null -eq $compiler) {
     $knownCompilerPaths = @(
+        "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
         "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
         "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
     )
