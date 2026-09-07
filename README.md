@@ -48,6 +48,23 @@ dotnet publish .\MouseTestMover\MouseTestMover.csproj -c Release -r win-x64 --se
 
 Distribute all files in `artifacts\publish`, as WPF may include native helper libraries alongside the executable.
 
+## Create an installation wizard
+
+The local `installer` folder contains an Inno Setup 6 definition. It creates a Spanish-language installation wizard, installs for the current user without administrator permissions, offers an optional desktop shortcut, creates an uninstall entry, and does not configure automatic startup.
+
+1. Install [Inno Setup 6](https://jrsoftware.org/isdl.php).
+2. From the repository root, run:
+
+   ```powershell
+   .\installer\build-installer.ps1
+   ```
+
+3. Share the generated file:
+
+   ```text
+   artifacts\installer\MouseTestMover-Setup.exe
+   ```
+
 ## Use
 
 1. Open the application.
