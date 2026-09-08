@@ -22,3 +22,6 @@ Perform these manual checks:
 6. Closing the window stops the active state.
 7. With the app active, allow the normal display timeout to pass and verify that the display remains on. Then stop the app and verify normal system behavior resumes.
 8. Verify the app makes no network requests and creates no local configuration files.
+9. Without touching the mouse or keyboard, check that Windows idle time increases while stopped. Start the app and check whether it drops after each accepted movement. The sent-event indicator alone does not confirm an idle-time reset or Teams presence.
+10. Test near the right edge and on a secondary monitor (including one positioned left of the main monitor). Confirm the cursor returns to its starting position.
+11. Confirm stopping prevents further generated movements while the idle-time display continues updating.

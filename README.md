@@ -7,7 +7,8 @@ Mouse Test Mover is a visible, local-only WPF desktop application for Windows. W
 - Visible window with start, stop, and stop-now controls.
 - Intervals of 15 seconds, 30 seconds, 1 minute, or 5 minutes.
 - Clear status, next-movement countdown, and completed-movement counter.
-- Uses the Windows `GetCursorPos` and `SetCursorPos` APIs through P/Invoke.
+- Uses `GetCursorPos` and `SendInput` to move 15 pixels and return, using absolute virtual-desktop coordinates.
+- Shows session idle time from `GetLastInputInfo` and whether Windows accepted the complete movement. This does not guarantee a particular Teams presence status.
 - Requests that Windows keep the display on only while the app is active; the request is released when stopped or closed.
 
 ## Privacy and scope
@@ -47,6 +48,8 @@ dotnet publish .\MouseTestMover\MouseTestMover.csproj -c Release -r win-x64 --se
 ```
 
 Distribute all files in `artifacts\publish`, as WPF may include native helper libraries alongside the executable.
+
+If direct execution of the application executable is restricted, `artifacts\publish\Abrir-MouseTestMover.bat` starts the application through an installed `dotnet` command. Keep it in the same folder as `MouseTestMover.dll`; it requires .NET 10 Desktop Runtime or SDK on the target computer.
 
 ## Create an installation wizard
 

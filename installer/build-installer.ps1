@@ -10,6 +10,8 @@ $scriptPath = Join-Path $PSScriptRoot 'MouseTestMover.iss'
 dotnet publish $projectPath -c Release -r win-x64 --self-contained true -o $publishPath
 if ($LASTEXITCODE -ne 0) { throw 'La publicacion de la aplicacion fallo.' }
 
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Abrir-MouseTestMover.bat') -Destination (Join-Path $publishPath 'Abrir-MouseTestMover.bat') -Force
+
 $compiler = Get-Command 'ISCC.exe' -ErrorAction SilentlyContinue
 if ($null -eq $compiler) {
     $knownCompilerPaths = @(

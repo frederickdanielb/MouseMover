@@ -1,7 +1,7 @@
 <Window x:Class="MouseTestMover.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Mouse Test Mover" Height="470" Width="600" MinHeight="470" MinWidth="600"
+        Title="Mouse Test Mover" Height="540" Width="600" MinHeight="540" MinWidth="600"
         WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Window.Resources>
         <Style TargetType="TextBlock"><Setter Property="FontFamily" Value="Segoe UI" /></Style>
@@ -24,14 +24,16 @@
                         <ComboBoxItem Tag="15">15 segundos</ComboBoxItem><ComboBoxItem Tag="30">30 segundos</ComboBoxItem>
                         <ComboBoxItem Tag="60">1 minuto</ComboBoxItem><ComboBoxItem Tag="300">5 minutos</ComboBoxItem>
                     </ComboBox>
-                    <TextBlock Grid.Column="2" Margin="14,0,0,0" VerticalAlignment="Center" Foreground="#69788B" Text="Desplaza 3 píxeles y regresa." />
+                    <TextBlock x:Name="MovementDescriptionTextBlock" Grid.Column="2" Margin="14,0,0,0" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="#69788B" />
                 </Grid>
                 <Border Grid.Row="2" Margin="0,26,0,0" Padding="20" Background="#EEF4FB" CornerRadius="8">
                     <Grid>
-                        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
                         <TextBlock x:Name="StatusTextBlock" FontSize="18" FontWeight="SemiBold" Foreground="#23466C" Text="Estado: detenido" />
                         <TextBlock x:Name="NextMoveTextBlock" Grid.Row="1" Margin="0,10,0,0" Foreground="#3E5873" Text="Próximo movimiento: --" />
                         <TextBlock x:Name="MoveCountTextBlock" Grid.Row="2" Margin="0,6,0,0" Foreground="#3E5873" Text="Movimientos realizados: 0" />
+                        <TextBlock x:Name="IdleTimeTextBlock" Grid.Row="3" Margin="0,6,0,0" Foreground="#3E5873" TextWrapping="Wrap" />
+                        <TextBlock x:Name="MovementResultTextBlock" Grid.Row="4" Margin="0,6,0,0" Foreground="#3E5873" TextWrapping="Wrap" Text="Último intento: pendiente." />
                     </Grid>
                 </Border>
                 <TextBlock Grid.Row="3" Margin="0,22,0,0" TextWrapping="Wrap" Foreground="#69788B" Text="No se conecta a Internet, no guarda datos, no se inicia con Windows y no requiere permisos de administrador." />
