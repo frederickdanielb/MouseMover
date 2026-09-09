@@ -12,7 +12,8 @@ param(
     [switch]$NoInteractive
 )
 
-Add-Type @'
+if (-not ('CursorNativeMethods' -as [type])) {
+    Add-Type @'
 using System.Runtime.InteropServices;
 
 public static class CursorNativeMethods
@@ -43,6 +44,7 @@ public static class CursorNativeMethods
     }
 }
 '@
+}
 
 function Write-Status {
     param(
