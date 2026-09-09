@@ -77,10 +77,16 @@ function Read-IntOrDefault {
 }
 
 function Get-IdleSeconds {
-    $info = New-Object CursorNativeMethods+LASTINPUTINFO
-    $info.cbSize = [System.Runtime.InteropServices.Marshal]::SizeOf($info)
-    if ([CursorNativeMethods]::GetLastInputInfo([ref]$info)) {
-        return [Math]::Max(0, [Math]::Round(([Environment]::TickCount - $info.dwTime) / 1000))
+    try {
+        $info = New-Object CursorNativeMethods+LASTINPUTINFO
+        $info.cbSize = [System.Runtime.InteropServices.Marshal]::SizeOf($info)
+        if ([CursorNativeMethods]::GetLastInputInfo([ref]$info)) {
+            return [Math]::Max(0, [Math]::Round(([Environment]::TickCount - $info.dwTime) / 1000))
+        }
+    }
+    catch {
+        # Una version anterior del tipo puede seguir cargada en esta sesion de PowerShell
+        # (Add-Type no permite redefinir tipos). Abri una consola nueva para recuperar esta funcion.
     }
     return -1
 }
@@ -186,9 +192,10 @@ try {
             if (-not $isPaused) { $remaining-- }
 
             $idleSeconds = Get-IdleSeconds
+            $idleLabel = if ($idleSeconds -ge 0) { "$idleSeconds s" } else { 'no disponible' }
             $statusLabel = if ($isPaused) { 'PAUSADO' } else { 'activo' }
             $percent = [int]((($IntervalSeconds - $remaining) / [double]$IntervalSeconds) * 100)
-            Write-Progress -Activity 'MouseMover' -Status "$statusLabel | proximo movimiento en $remaining s | inactividad Windows: $idleSeconds s | movimientos: $movementCount" -PercentComplete $percent
+            Write-Progress -Activity 'MouseMover' -Status "$statusLabel | proximo movimiento en $remaining s | inactividad Windows: $idleLabel | movimientos: $movementCount" -PercentComplete $percent
         }
     }
 }
