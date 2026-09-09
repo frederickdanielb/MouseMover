@@ -14,6 +14,7 @@ Todos los cambios relevantes de este proyecto se documentan en este archivo.
 ### Agregado
 
 - Se agregó `Move-Cursor.ps1`, una alternativa por consola a la app WPF, con sus parámetros documentados en el README.
+- `Move-Cursor.ps1` ahora tiene menú interactivo inicial (si se ejecuta sin parámetros), barra de progreso nativa con inactividad real de Windows, pausar/reanudar con `P`, salida prolija con `Q` o `Ctrl+C`, resumen final de sesión, y detección automática de consolas sin soporte de teclas (con `-NoInteractive` para omitir el menú).
 
 ## [1.0.0] - 2026-09-06
 

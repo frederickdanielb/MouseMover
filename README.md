@@ -84,13 +84,17 @@ La carpeta local `installer` contiene una definición de Inno Setup 6. Genera un
 
 `Move-Cursor.ps1`, en la raíz del repositorio, es un script de PowerShell autocontenido que no requiere compilación. Es útil cuando no podés ejecutar la app WPF (por ejemplo, mientras esperás que IT la autorice) y solo necesitás el movimiento del cursor desde una terminal.
 
-Ejecutalo con los valores por defecto (intervalo de 30 segundos, desplazamiento de 15 píxeles, corre hasta que lo detengas):
+### Menú interactivo
+
+Ejecutado sin parámetros, el script muestra un menú simple para configurar el intervalo, el desplazamiento y la duración (Enter acepta el valor por defecto que se muestra entre corchetes):
 
 ```powershell
 .\Move-Cursor.ps1
 ```
 
-Personalizá el intervalo, el desplazamiento y, opcionalmente, una duración para que se detenga solo:
+### Modo directo (para automatizar)
+
+Pasando cualquier parámetro, o agregando `-NoInteractive`, se omite el menú y arranca de inmediato:
 
 ```powershell
 .\Move-Cursor.ps1 -IntervalSeconds 60 -OffsetPixels 20 -DurationMinutes 120
@@ -101,8 +105,15 @@ Personalizá el intervalo, el desplazamiento y, opcionalmente, una duración par
 | `-IntervalSeconds` | 30 | Segundos entre movimientos (1 a 3600). |
 | `-OffsetPixels` | 15 | Píxeles que se desplaza el cursor antes de regresar (1 a 500). |
 | `-DurationMinutes` | 0 (sin límite) | Minutos que corre antes de detenerse solo (0 a 1440). |
+| `-NoInteractive` | (desactivado) | Omite el menú inicial aunque no se pase ningún otro parámetro. |
 
-Presioná `Ctrl+C` para detenerlo en cualquier momento. El script solo usa `GetCursorPos`/`SetCursorPos` de `user32.dll`, imprime cada movimiento en la consola, y no escribe ningún archivo ni deja un proceso en segundo plano al salir.
+### Mientras corre
+
+- Muestra una barra de progreso nativa de PowerShell con el estado, el próximo movimiento, la inactividad real registrada por Windows (`GetLastInputInfo`) y el total de movimientos.
+- `P` pausa y reanuda sin cerrar el script (la cuenta regresiva se congela mientras está en pausa).
+- `Q` o `Ctrl+C` lo detienen de forma prolija y muestran un resumen final (movimientos realizados y duración de la sesión). En consolas que no admiten lectura de teclas (por ejemplo, entrada redirigida desde un archivo) el script lo detecta solo y sigue funcionando con `Ctrl+C` como única forma de salir.
+
+El script solo usa `GetCursorPos`, `SetCursorPos` y `GetLastInputInfo` de `user32.dll`, imprime todo en la consola, y no escribe ningún archivo ni deja un proceso en segundo plano al salir.
 
 ## Desarrollo
 
