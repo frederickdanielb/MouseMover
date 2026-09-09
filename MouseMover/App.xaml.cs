@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace MouseTestMover;
+namespace MouseMover;
 
 public partial class App : Application
 {

@@ -1,22 +1,22 @@
-# Contributing
+# Contribuir
 
-Thank you for improving Mouse Test Mover.
+Gracias por mejorar MouseMover.
 
-## Local workflow
+## Flujo de trabajo local
 
-1. Create a local branch.
-2. Build the solution:
+1. Creá una rama local.
+2. Compilá la solución:
 
    ```powershell
-   dotnet build .\MouseTestMover.slnx -c Release
+   dotnet build .\MouseMover.slnx -c Release
    ```
 
-3. Follow the checks in [TESTING.md](TESTING.md).
-4. Keep changes focused and update `CHANGELOG.md` when user-visible behavior changes.
+3. Seguí las verificaciones en [TESTING.md](TESTING.md).
+4. Mantené los cambios enfocados y actualizá `CHANGELOG.md` cuando cambie el comportamiento visible para el usuario.
 
-## Guidelines
+## Lineamientos
 
-- Preserve the local-only design: do not add network access, telemetry, persistence, auto-start, or administrator requirements without explicit discussion.
-- Keep the window visible while the feature is active.
-- Use clear Spanish user-facing text and clear English code identifiers.
-- Do not commit generated output such as `bin`, `obj`, `artifacts`, or installers.
+- Preservá el diseño 100% local: no agregues acceso a red, telemetría, persistencia, inicio automático ni requisitos de administrador sin discutirlo explícitamente.
+- Mantené la ventana visible mientras la función está activa.
+- Usá texto claro en español para el usuario e identificadores de código claros en inglés.
+- No subas archivos generados como `bin`, `obj`, `artifacts` o instaladores.

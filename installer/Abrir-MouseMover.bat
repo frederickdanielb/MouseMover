@@ -9,4 +9,4 @@ if errorlevel 1 (
     exit /b 1
 )
 
-dotnet "%~dp0MouseTestMover.dll"
+dotnet "%~dp0MouseMover.dll"

@@ -3,14 +3,14 @@ param()
 
 $ErrorActionPreference = 'Stop'
 $repositoryRoot = Split-Path -Parent $PSScriptRoot
-$projectPath = Join-Path $repositoryRoot 'MouseTestMover\MouseTestMover.csproj'
+$projectPath = Join-Path $repositoryRoot 'MouseMover\MouseMover.csproj'
 $publishPath = Join-Path $repositoryRoot 'artifacts\publish'
-$scriptPath = Join-Path $PSScriptRoot 'MouseTestMover.iss'
+$scriptPath = Join-Path $PSScriptRoot 'MouseMover.iss'
 
 dotnet publish $projectPath -c Release -r win-x64 --self-contained true -o $publishPath
 if ($LASTEXITCODE -ne 0) { throw 'La publicacion de la aplicacion fallo.' }
 
-Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Abrir-MouseTestMover.bat') -Destination (Join-Path $publishPath 'Abrir-MouseTestMover.bat') -Force
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Abrir-MouseMover.bat') -Destination (Join-Path $publishPath 'Abrir-MouseMover.bat') -Force
 
 $compiler = Get-Command 'ISCC.exe' -ErrorAction SilentlyContinue
 if ($null -eq $compiler) {
@@ -32,4 +32,4 @@ if ([string]::IsNullOrWhiteSpace($compilerPath)) {
 & $compilerPath $scriptPath
 if ($LASTEXITCODE -ne 0) { throw 'La compilacion del instalador fallo.' }
 
-Write-Host "Instalador creado en: $repositoryRoot\artifacts\installer\MouseTestMover-Setup.exe"
+Write-Host "Instalador creado en: $repositoryRoot\artifacts\installer\MouseMover-Setup.exe"

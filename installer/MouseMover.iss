@@ -1,10 +1,10 @@
-; Mouse Test Mover installer definition for Inno Setup 6.
-; Run installer\build-installer.ps1 to publish the app and compile this script.
+; Definición del instalador de MouseMover para Inno Setup 6.
+; Ejecutá installer\build-installer.ps1 para publicar la app y compilar este script.
 
-#define AppName "Mouse Test Mover"
+#define AppName "MouseMover"
 #define AppVersion "1.0.0"
-#define AppPublisher "Mouse Test Mover contributors"
-#define AppExeName "MouseTestMover.exe"
+#define AppPublisher "MouseMover contributors"
+#define AppExeName "MouseMover.exe"
 
 [Setup]
 AppId={{E0C1E46E-6771-4B82-8D8A-489B2D34E57B}
@@ -15,7 +15,7 @@ DefaultDirName={localappdata}\Programs\{#AppName}
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 OutputDir=..\artifacts\installer
-OutputBaseFilename=MouseTestMover-Setup
+OutputBaseFilename=MouseMover-Setup
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern

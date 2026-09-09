@@ -1,84 +1,113 @@
-# Mouse Test Mover
+# MouseMover
 
-Mouse Test Mover is a visible, local-only WPF desktop application for Windows. When enabled, it briefly moves the mouse cursor a few pixels to the right and immediately restores its original position at a selected interval.
+MouseMover es una aplicación de escritorio WPF para Windows, visible y de uso 100% local. Al activarla, mueve brevemente el cursor del mouse unos pocos píxeles hacia la derecha y de inmediato lo devuelve a su posición original, a un intervalo seleccionado.
 
-## Features
+El repositorio también incluye `Move-Cursor.ps1`, un script de PowerShell independiente que hace lo mismo desde una terminal, para computadoras donde ejecutar el `.exe` compilado directamente esté restringido.
 
-- Visible window with start, stop, and stop-now controls.
-- Intervals of 15 seconds, 30 seconds, 1 minute, or 5 minutes.
-- Clear status, next-movement countdown, and completed-movement counter.
-- Uses `GetCursorPos` and `SendInput` to move 15 pixels and return, using absolute virtual-desktop coordinates.
-- Shows session idle time from `GetLastInputInfo` and whether Windows accepted the complete movement. This does not guarantee a particular Teams presence status.
-- Requests that Windows keep the display on only while the app is active; the request is released when stopped or closed.
+## Características
 
-## Privacy and scope
+- Ventana visible con controles de iniciar, detener y detener ahora.
+- Intervalos de 15 segundos, 30 segundos, 1 minuto o 5 minutos.
+- Estado claro, cuenta regresiva del próximo movimiento y contador de movimientos realizados.
+- Usa `GetCursorPos` y `SendInput` para mover 15 píxeles y regresar, usando coordenadas absolutas del escritorio virtual.
+- Muestra el tiempo de inactividad de la sesión obtenido de `GetLastInputInfo` e indica si Windows aceptó el movimiento completo. Esto no garantiza un estado de presencia particular en Teams.
+- Solicita a Windows mantener la pantalla encendida solo mientras la app está activa; la solicitud se libera al detenerla o cerrarla.
+- Un pequeño ratón se asoma al azar desde una de las cuatro esquinas del panel de estado cada vez que se envía un movimiento.
 
-- Runs locally only: no network, server, telemetry, analytics, or data collection.
-- Does not store settings or other data.
-- Does not start automatically with Windows.
-- Does not require administrator permissions.
-- Windows only. The app uses WPF and Windows-native APIs.
+## Privacidad y alcance
 
-## Requirements
+- Funciona 100% local: sin red, servidor, telemetría, analítica ni recolección de datos.
+- No guarda configuraciones ni ningún otro dato.
+- No se inicia automáticamente con Windows.
+- No requiere permisos de administrador.
+- Solo Windows. La app usa WPF y APIs nativas de Windows.
 
-- Windows 10 or later
-- .NET 10 SDK to build from source
+## Requisitos
 
-Verify your installed SDKs:
+- Windows 10 o superior
+- SDK de .NET 10 para compilar desde el código fuente
+
+Verificá tus SDKs instalados:
 
 ```powershell
 dotnet --list-sdks
 ```
 
-## Build and run
+## Compilar y ejecutar
 
-From the repository root:
-
-```powershell
-dotnet build .\MouseTestMover.slnx -c Release
-dotnet run --project .\MouseTestMover\MouseTestMover.csproj
-```
-
-## Publish for another Windows computer
-
-Create a self-contained Windows x64 release. The target computer will not need the .NET runtime installed.
+Desde la raíz del repositorio:
 
 ```powershell
-dotnet publish .\MouseTestMover\MouseTestMover.csproj -c Release -r win-x64 --self-contained true -o .\artifacts\publish
+dotnet build .\MouseMover.slnx -c Release
+dotnet run --project .\MouseMover\MouseMover.csproj
 ```
 
-Distribute all files in `artifacts\publish`, as WPF may include native helper libraries alongside the executable.
+## Publicar para otra computadora con Windows
 
-If direct execution of the application executable is restricted, `artifacts\publish\Abrir-MouseTestMover.bat` starts the application through an installed `dotnet` command. Keep it in the same folder as `MouseTestMover.dll`; it requires .NET 10 Desktop Runtime or SDK on the target computer.
+Creá una versión autocontenida para Windows x64. La computadora destino no necesitará tener instalado el runtime de .NET.
 
-## Create an installation wizard
+```powershell
+dotnet publish .\MouseMover\MouseMover.csproj -c Release -r win-x64 --self-contained true -o .\artifacts\publish
+```
 
-The local `installer` folder contains an Inno Setup 6 definition. It creates a Spanish-language installation wizard, installs for the current user without administrator permissions, offers an optional desktop shortcut, creates an uninstall entry, and does not configure automatic startup.
+Distribuí todos los archivos de `artifacts\publish`, ya que WPF puede incluir bibliotecas nativas auxiliares junto al ejecutable.
 
-1. Install [Inno Setup 6](https://jrsoftware.org/isdl.php).
-2. From the repository root, run:
+Si la ejecución directa del ejecutable está restringida, `artifacts\publish\Abrir-MouseMover.bat` inicia la aplicación mediante un comando `dotnet` instalado. Mantenelo en la misma carpeta que `MouseMover.dll`; requiere el .NET 10 Desktop Runtime o el SDK en la computadora destino.
+
+> Algunas herramientas de protección de endpoints (agentes de control de aplicaciones como ManageEngine) bloquean ejecutables recién compilados que se corren directamente desde una carpeta de usuario. En ese caso, instalá la app con el asistente de instalación de abajo (que la coloca bajo `%LocalAppData%\Programs`) o pedile a IT que autorice el ejecutable.
+
+## Crear un instalador
+
+La carpeta local `installer` contiene una definición de Inno Setup 6. Genera un asistente de instalación en español, instala para el usuario actual sin permisos de administrador, ofrece un acceso directo opcional en el escritorio, crea una entrada de desinstalación y no configura el inicio automático.
+
+1. Instalá [Inno Setup 6](https://jrsoftware.org/isdl.php).
+2. Desde la raíz del repositorio, ejecutá:
 
    ```powershell
    .\installer\build-installer.ps1
    ```
 
-3. Share the generated file:
+3. Compartí el archivo generado:
 
    ```text
-   artifacts\installer\MouseTestMover-Setup.exe
+   artifacts\installer\MouseMover-Setup.exe
    ```
 
-## Use
+## Uso
 
-1. Open the application.
-2. Select an interval.
-3. Select **Iniciar**.
-4. Select **Detener**, **Detener ahora**, or close the window to stop.
+1. Abrí la aplicación.
+2. Seleccioná un intervalo.
+3. Seleccioná **Iniciar**.
+4. Seleccioná **Detener**, **Detener ahora**, o cerrá la ventana para detenerla.
 
-## Development
+## Alternativa por consola: Move-Cursor.ps1
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for local contribution guidance, [TESTING.md](TESTING.md) for validation steps, and [CHANGELOG.md](CHANGELOG.md) for release history.
+`Move-Cursor.ps1`, en la raíz del repositorio, es un script de PowerShell autocontenido que no requiere compilación. Es útil cuando no podés ejecutar la app WPF (por ejemplo, mientras esperás que IT la autorice) y solo necesitás el movimiento del cursor desde una terminal.
 
-## License
+Ejecutalo con los valores por defecto (intervalo de 30 segundos, desplazamiento de 15 píxeles, corre hasta que lo detengas):
 
-This project is licensed under the [MIT License](LICENSE).
+```powershell
+.\Move-Cursor.ps1
+```
+
+Personalizá el intervalo, el desplazamiento y, opcionalmente, una duración para que se detenga solo:
+
+```powershell
+.\Move-Cursor.ps1 -IntervalSeconds 60 -OffsetPixels 20 -DurationMinutes 120
+```
+
+| Parámetro | Valor por defecto | Descripción |
+| --- | --- | --- |
+| `-IntervalSeconds` | 30 | Segundos entre movimientos (1 a 3600). |
+| `-OffsetPixels` | 15 | Píxeles que se desplaza el cursor antes de regresar (1 a 500). |
+| `-DurationMinutes` | 0 (sin límite) | Minutos que corre antes de detenerse solo (0 a 1440). |
+
+Presioná `Ctrl+C` para detenerlo en cualquier momento. El script solo usa `GetCursorPos`/`SetCursorPos` de `user32.dll`, imprime cada movimiento en la consola, y no escribe ningún archivo ni deja un proceso en segundo plano al salir.
+
+## Desarrollo
+
+Consultá [CONTRIBUTING.md](CONTRIBUTING.md) para la guía de contribución local, [TESTING.md](TESTING.md) para los pasos de validación, y [CHANGELOG.md](CHANGELOG.md) para el historial de versiones.
+
+## Licencia
+
+Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).

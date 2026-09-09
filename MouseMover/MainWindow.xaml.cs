@@ -2,13 +2,16 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-namespace MouseTestMover;
+namespace MouseMover;
 
 public partial class MainWindow : Window
 {
     private const int CursorOffsetPixels = 15;
+    private readonly Random _random = new();
     private readonly DispatcherTimer _displayTimer;
     private DateTime _nextMoveAt;
     private TimeSpan _selectedInterval = TimeSpan.FromSeconds(30);
@@ -72,6 +75,7 @@ public partial class MainWindow : Window
             if (MoveCursorBriefly())
             {
                 _moveCount++;
+                AnimateMousePeek();
                 MovementResultTextBlock.Text = "Último intento: movimiento enviado a Windows.";
             }
             else
@@ -114,6 +118,44 @@ public partial class MainWindow : Window
             NativeMethods.SendInput(1, [inputs[1]], Marshal.SizeOf<NativeMethods.INPUT>());
         }
         return sent == inputs.Length;
+    }
+
+    private void AnimateMousePeek()
+    {
+        (Canvas canvas, ScaleTransform scale)[] corners =
+        [
+            (MousePeekTopLeft, MousePeekTopLeftScale),
+            (MousePeekTopRight, MousePeekTopRightScale),
+            (MousePeekBottomLeft, MousePeekBottomLeftScale),
+            (MousePeekBottomRight, MousePeekBottomRightScale)
+        ];
+        (Canvas canvas, ScaleTransform scale) chosen = corners[_random.Next(corners.Length)];
+
+        var popEase = new BackEase { EasingMode = EasingMode.EaseOut, Amplitude = 0.7 };
+        var hideEase = new QuadraticEase { EasingMode = EasingMode.EaseIn };
+
+        var opacity = new DoubleAnimationUsingKeyFrames
+        {
+            KeyFrames =
+            {
+                new EasingDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(200)), popEase),
+                new EasingDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(950))),
+                new EasingDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(1150)), hideEase)
+            }
+        };
+        var scaleAnimation = new DoubleAnimationUsingKeyFrames
+        {
+            KeyFrames =
+            {
+                new EasingDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(200)), popEase),
+                new EasingDoubleKeyFrame(1, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(950))),
+                new EasingDoubleKeyFrame(0.6, KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(1150)), hideEase)
+            }
+        };
+
+        chosen.canvas.BeginAnimation(UIElement.OpacityProperty, opacity);
+        chosen.scale.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnimation);
+        chosen.scale.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnimation);
     }
 
     private void UpdateDisplay()
